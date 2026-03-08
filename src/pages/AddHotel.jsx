@@ -83,7 +83,7 @@ export default function AddHotel() {
     });
 
     try {
-      await axios.post('http://localhost:5000/api/admin/hotel', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/hotel`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Hotel created successfully!');

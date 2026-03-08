@@ -28,7 +28,7 @@ export default function HotelDetails() {
 
   const fetchHotelDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/admin/hotel/${id}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}`);
       const h = res.data.hotel;
       setHotel(h);
       setHotelName(h.hotelName || '');
@@ -47,7 +47,7 @@ export default function HotelDetails() {
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/admin/hotel/${id}`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}`, {
         hotelName,
         price,
         description,
@@ -73,7 +73,7 @@ export default function HotelDetails() {
     formData.append('note', menuNote);
 
     try {
-      await axios.post(`http://localhost:5000/api/admin/hotel/${id}/menu`, formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}/menu`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Menu uploaded successfully!');

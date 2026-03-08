@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   const fetchHotels = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/hotels');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/hotels`);
       setHotels(res.data.hotels);
     } catch (err) {
       console.error(err);
@@ -30,7 +30,7 @@ export default function Dashboard() {
     }
     
     try {
-      await axios.delete(`http://localhost:5000/api/admin/hotel/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}`);
       alert('Hotel deleted successfully!');
       fetchHotels();
     } catch (err) {

@@ -28,7 +28,7 @@ export default function Dashboard() {
     if (!window.confirm("Are you sure you want to completely delete this hotel? This deletes all their data, menus, and images from the database.")) {
       return;
     }
-    
+
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}`);
       alert('Hotel deleted successfully!');
@@ -52,15 +52,15 @@ export default function Dashboard() {
           + Add New Hotel
         </button>
       </div>
-      
+
       <div className="hotel-grid">
         {hotels.map((hotel) => (
           <div key={hotel._id} className="hotel-card" onClick={() => navigate(`/hotel/${hotel._id}`)}>
             <div className="hotel-card-content" style={{ position: 'relative' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <h3>{hotel.hotelName || hotel.name || 'Unnamed Mess'}</h3>
-                <button 
-                  className="btn-danger" 
+                <button
+                  className="btn-danger"
                   onClick={(e) => handleDelete(e, hotel._id)}
                   style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
                 >
@@ -69,6 +69,7 @@ export default function Dashboard() {
               </div>
               <p><strong>Phone:</strong> {hotel.mobileNumber}</p>
               <p><strong>Thali Price:</strong> ₹{hotel.price || 0}</p>
+              <p><strong>Address:</strong> {hotel.address || 'No Address'}</p>
             </div>
             {hotel.todayMenu ? (
               <img src={hotel.todayMenu.imageUrl} alt="Today's Menu" className="menu-image-preview" />

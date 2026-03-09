@@ -6,17 +6,18 @@ import { ArrowLeft, Save, Upload, Plus } from 'lucide-react';
 export default function HotelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [hotel, setHotel] = useState(null);
   const [recentMenus, setRecentMenus] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Form states
   const [hotelName, setHotelName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
+  const [address, setAddress] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
-  
+
   // Menu state
   const [menuFile, setMenuFile] = useState(null);
   const [menuNote, setMenuNote] = useState('');
@@ -34,6 +35,7 @@ export default function HotelDetails() {
       setHotelName(h.hotelName || '');
       setPrice(h.price || '');
       setDescription(h.description || '');
+      setAddress(h.address || '');
       setMobileNumber(h.mobileNumber || '');
       setRecentMenus(res.data.recentMenus || []);
     } catch (err) {
@@ -51,6 +53,7 @@ export default function HotelDetails() {
         hotelName,
         price,
         description,
+        address,
         mobileNumber
       });
       alert('Information updated successfully!');
@@ -97,9 +100,9 @@ export default function HotelDetails() {
       </button>
 
       <h2>Managing: {hotel.hotelName || 'Unnamed Mess'}</h2>
-      
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '2rem' }}>
-        
+
         {/* Update Details Form */}
         <div>
           <h3>Edit Details</h3>
@@ -108,7 +111,7 @@ export default function HotelDetails() {
               <label>Mess Name</label>
               <input type="text" value={hotelName} onChange={e => setHotelName(e.target.value)} />
             </div>
-            
+
             <div className="form-group">
               <label>Mobile Number (For Login Later)</label>
               <input type="text" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} />
@@ -116,12 +119,17 @@ export default function HotelDetails() {
 
             <div className="form-group">
               <label>Thali Price (₹)</label>
-              <input type="number" value={price} onChange={e => setPrice(e.target.value)} />
+              <input type="number" value={price} onChange={e => setPrice(e.target.value)} onWheel={e => e.target.blur()} />
             </div>
 
             <div className="form-group">
-              <label>Description / Address</label>
-              <textarea rows={4} value={description} onChange={e => setDescription(e.target.value)}></textarea>
+              <label>Description</label>
+              <textarea rows={2} value={description} onChange={e => setDescription(e.target.value)}></textarea>
+            </div>
+
+            <div className="form-group">
+              <label>Address</label>
+              <textarea rows={3} value={address} onChange={e => setAddress(e.target.value)}></textarea>
             </div>
 
             <button type="submit" className="btn" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -143,7 +151,7 @@ export default function HotelDetails() {
               <label>Extra Note (Optional - e.g. "Special Gulab Jamun today")</label>
               <input type="text" value={menuNote} onChange={e => setMenuNote(e.target.value)} />
             </div>
-            
+
             <button type="submit" className="btn" disabled={uploadingMenu} style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Upload size={18} /> {uploadingMenu ? 'Uploading...' : 'Upload Menu'}
             </button>
@@ -160,9 +168,9 @@ export default function HotelDetails() {
                   </div>
                 </div>
               ))}
-              {recentMenus.length === 0 && <p style={{color: '#64748b'}}>No recent menus found.</p>}
+              {recentMenus.length === 0 && <p style={{ color: '#64748b' }}>No recent menus found.</p>}
             </div>
-            <p style={{color: '#64748b', marginTop: '1rem', fontSize: '0.9rem'}}>These are automatically pushed to the users app when you upload above.</p>
+            <p style={{ color: '#64748b', marginTop: '1rem', fontSize: '0.9rem' }}>These are automatically pushed to the users app when you upload above.</p>
           </div>
         </div>
 

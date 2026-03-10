@@ -19,7 +19,7 @@ export default function AddHotel() {
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-
+  
   // Ambiance files
   const [files, setFiles] = useState([]);
   const [fetchingLocation, setFetchingLocation] = useState(false);
@@ -105,7 +105,7 @@ export default function AddHotel() {
       </button>
 
       <h2>Add New Hotel / Mess</h2>
-
+      
       <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
         <h3 style={{ color: 'var(--primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>Login Credentials</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -133,24 +133,24 @@ export default function AddHotel() {
 
         <div className="form-group">
           <label>Base Price / Thali Price (₹)</label>
-          <input type="number" placeholder="e.g. 100" value={price} onChange={e => setPrice(e.target.value)} onWheel={e => e.target.blur()} />
+          <input type="number" placeholder="e.g. 100" value={price} onChange={e => setPrice(e.target.value)} />
         </div>
 
         <div className="form-group">
-          <label>Description</label>
-          <textarea rows={2} placeholder="Description..." value={description} onChange={e => setDescription(e.target.value)}></textarea>
+          <label>Address</label>
+          <textarea rows={2} placeholder="Full address..." value={address} onChange={e => setAddress(e.target.value)}></textarea>
         </div>
 
         <div className="form-group" style={{ position: 'relative' }}>
-          <label>Address</label>
-          <textarea rows={3} placeholder="Full address..." value={address} onChange={e => setAddress(e.target.value)}></textarea>
+          <label>Description</label>
+          <textarea rows={2} placeholder="Description about the hotel/mess..." value={description} onChange={e => setDescription(e.target.value)}></textarea>
         </div>
 
-        <button
-          type="button"
-          onClick={handleGetLocation}
+        <button 
+          type="button" 
+          onClick={handleGetLocation} 
           disabled={fetchingLocation}
-          className="btn-primary"
+          className="btn-primary" 
           style={{ background: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', marginBottom: '1.5rem', width: 'auto', gap: '0.5rem', alignSelf: 'start' }}
         >
           <MapPin size={18} /> {fetchingLocation ? 'Fetching Location...' : 'Use Current Location'}
@@ -159,11 +159,11 @@ export default function AddHotel() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div className="form-group">
             <label>Latitude (Location)</label>
-            <input type="number" step="any" placeholder="e.g. 22.5532" value={latitude} onChange={e => setLatitude(e.target.value)} onWheel={e => e.target.blur()} />
+            <input type="number" step="any" placeholder="e.g. 22.5532" value={latitude} onChange={e => setLatitude(e.target.value)} />
           </div>
           <div className="form-group">
             <label>Longitude (Location)</label>
-            <input type="number" step="any" placeholder="e.g. 72.9231" value={longitude} onChange={e => setLongitude(e.target.value)} onWheel={e => e.target.blur()} />
+            <input type="number" step="any" placeholder="e.g. 72.9231" value={longitude} onChange={e => setLongitude(e.target.value)} />
           </div>
         </div>
 

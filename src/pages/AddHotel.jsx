@@ -19,7 +19,8 @@ export default function AddHotel() {
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-  
+  const [hotelType, setHotelType] = useState('dynamic');
+
   // Ambiance files
   const [files, setFiles] = useState([]);
   const [fetchingLocation, setFetchingLocation] = useState(false);
@@ -79,6 +80,7 @@ export default function AddHotel() {
     formData.append('address', address);
     formData.append('latitude', latitude);
     formData.append('longitude', longitude);
+    formData.append('hotelType', hotelType);
 
     Array.from(files).forEach((file) => {
       formData.append('ambiance', file);
@@ -105,7 +107,7 @@ export default function AddHotel() {
       </button>
 
       <h2>Add New Hotel / Mess</h2>
-      
+
       <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
         <h3 style={{ color: 'var(--primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>Login Credentials</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -146,11 +148,19 @@ export default function AddHotel() {
           <textarea rows={2} placeholder="Description about the hotel/mess..." value={description} onChange={e => setDescription(e.target.value)}></textarea>
         </div>
 
-        <button 
-          type="button" 
-          onClick={handleGetLocation} 
+        <div className="form-group">
+          <label>Hotel Type</label>
+          <select value={hotelType} onChange={e => setHotelType(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <option value="dynamic">Dynamic Menu</option>
+            <option value="fixed">Fixed Menu</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGetLocation}
           disabled={fetchingLocation}
-          className="btn-primary" 
+          className="btn-primary"
           style={{ background: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', marginBottom: '1.5rem', width: 'auto', gap: '0.5rem', alignSelf: 'start' }}
         >
           <MapPin size={18} /> {fetchingLocation ? 'Fetching Location...' : 'Use Current Location'}

@@ -67,7 +67,6 @@ export default function Dashboard() {
                   Delete
                 </button>
               </div>
-              <p><strong>Phone:</strong> {hotel.mobileNumber}</p>
               <p><strong>Thali Price:</strong> ₹{hotel.price || 0}</p>
               <p><strong>Address:</strong> {hotel.address || 'No Address'}</p>
             </div>

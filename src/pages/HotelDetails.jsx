@@ -25,6 +25,10 @@ export default function HotelDetails() {
   const [menuNote, setMenuNote] = useState('');
   const [uploadingMenu, setUploadingMenu] = useState(false);
 
+  // Ambiance state
+  const [ambianceFiles, setAmbianceFiles] = useState([]);
+  const [uploadingAmbiance, setUploadingAmbiance] = useState(false);
+
   useEffect(() => {
     fetchHotelDetails();
   }, [id]);
@@ -96,6 +100,32 @@ export default function HotelDetails() {
       alert('Failed to upload menu');
     } finally {
       setUploadingMenu(false);
+    }
+  };
+
+  const handleUploadAmbiance = async (e) => {
+    e.preventDefault();
+    if (!ambianceFiles || ambianceFiles.length === 0) {
+      alert('Please select at least one photo!');
+      return;
+    }
+    setUploadingAmbiance(true);
+    const formData = new FormData();
+    Array.from(ambianceFiles).forEach(file => {
+      formData.append('ambiance', file);
+    });
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}/ambiance`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      alert(`${ambianceFiles.length} photo(s) uploaded successfully!`);
+      setAmbianceFiles([]);
+      fetchHotelDetails();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload ambiance photos');
+    } finally {
+      setUploadingAmbiance(false);
     }
   };
 
@@ -211,6 +241,76 @@ export default function HotelDetails() {
           </div>
         </div>
 
+      </div>
+
+      {/* Ambiance Photos Section */}
+      <div style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
+        <h3 style={{ marginBottom: '1.5rem' }}>🖼️ Hotel Ambiance Photos</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+
+          {/* Upload new ambiance */}
+          <div>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>Upload New Photos</h4>
+            <form onSubmit={handleUploadAmbiance} style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '2px dashed var(--border)' }}>
+              <div className="form-group">
+                <label>Select Multiple Photos</label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={e => setAmbianceFiles(e.target.files)}
+                  style={{ background: 'white', width: '100%', marginBottom: '0.5rem' }}
+                />
+                {ambianceFiles.length > 0 && (
+                  <p style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 600 }}>
+                    ✓ {ambianceFiles.length} photo(s) selected — all will upload at once
+                  </p>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="btn"
+                disabled={uploadingAmbiance}
+                style={{ background: '#6366f1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <Upload size={18} /> {uploadingAmbiance ? 'Uploading...' : 'Upload Ambiance Photos'}
+              </button>
+            </form>
+          </div>
+
+          {/* Existing photos preview */}
+          <div>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              Current Photos
+              {hotel.photos && hotel.photos.length > 0 && (
+                <span style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: '999px' }}>
+                  {hotel.photos.length}
+                </span>
+              )}
+            </h4>
+            {hotel.photos && hotel.photos.length > 0 ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.75rem', maxHeight: '320px', overflowY: 'auto', padding: '0.25rem' }}>
+                {hotel.photos.map((url, idx) => (
+                  <div key={idx} style={{ position: 'relative', borderRadius: '6px', overflow: 'hidden', border: '1px solid var(--border)', aspectRatio: '1' }}>
+                    <img
+                      src={url}
+                      alt={`Ambiance ${idx + 1}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    {idx === 0 && (
+                      <span style={{ position: 'absolute', bottom: 4, left: 4, background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: '0.65rem', padding: '2px 6px', borderRadius: '4px' }}>Cover</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', background: '#f8fafc', padding: '1.5rem', borderRadius: '8px', textAlign: 'center' }}>
+                No ambiance photos yet. Upload some above!
+              </p>
+            )}
+          </div>
+
+        </div>
       </div>
 
       <div style={{ marginTop: '2rem', borderTop: '1px solid var(--border)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>

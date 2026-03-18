@@ -14,6 +14,7 @@ export default function HotelDetails() {
   // Form states
   const [hotelName, setHotelName] = useState('');
   const [price, setPrice] = useState('');
+  const [showPrice, setShowPrice] = useState(true);
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
@@ -35,6 +36,7 @@ export default function HotelDetails() {
       setHotel(h);
       setHotelName(h.hotelName || '');
       setPrice(h.price || '');
+      setShowPrice(h.showPrice !== false);
       setDescription(h.description || '');
       setAddress(h.address || '');
       setMobileNumber(h.mobileNumber || '');
@@ -54,6 +56,7 @@ export default function HotelDetails() {
       await axios.put(`${import.meta.env.VITE_API_URL}/admin/hotel/${id}`, {
         hotelName,
         price,
+        showPrice,
         description,
         address,
         mobileNumber,
@@ -127,6 +130,25 @@ export default function HotelDetails() {
               <input type="number" value={price} onChange={e => setPrice(e.target.value)} />
             </div>
 
+            <div className="form-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f8fafc', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.85rem 1rem' }}>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: '0.95rem', color: '#334155' }}>Show Price on App</div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>Turn off if price is variable / not fixed</div>
+              </div>
+              <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '26px', cursor: 'pointer', flexShrink: 0 }}>
+                <input type="checkbox" checked={showPrice} onChange={e => setShowPrice(e.target.checked)} style={{ opacity: 0, width: 0, height: 0 }} />
+                <span style={{
+                  position: 'absolute', inset: 0, borderRadius: '999px', transition: '0.3s',
+                  background: showPrice ? '#10b981' : '#cbd5e1',
+                }} />
+                <span style={{
+                  position: 'absolute', top: '3px', left: showPrice ? '25px' : '3px',
+                  width: '20px', height: '20px', borderRadius: '50%', background: '#fff',
+                  transition: '0.3s', boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+                }} />
+              </label>
+            </div>
+
             <div className="form-group">
               <label>Address</label>
               <textarea rows={3} value={address} onChange={e => setAddress(e.target.value)}></textarea>
@@ -140,8 +162,9 @@ export default function HotelDetails() {
             <div className="form-group">
               <label>Hotel Type</label>
               <select value={hotelType} onChange={e => setHotelType(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                <option value="dynamic">Dynamic Menu</option>
-                <option value="fixed">Fixed Menu</option>
+                <option value="dynamic">Daily Specials</option>
+                <option value="fixed">Breakfast &amp; Snacks</option>
+                <option value="fastfood">Fast Food</option>
               </select>
             </div>
 

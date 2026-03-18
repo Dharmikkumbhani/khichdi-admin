@@ -15,6 +15,7 @@ export default function AddHotel() {
   const [name, setName] = useState('');
   const [hotelName, setHotelName] = useState('');
   const [price, setPrice] = useState('');
+  const [showPrice, setShowPrice] = useState(true);
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -76,6 +77,7 @@ export default function AddHotel() {
     formData.append('name', name);
     formData.append('hotelName', hotelName);
     formData.append('price', price);
+    formData.append('showPrice', showPrice);
     formData.append('description', description);
     formData.append('address', address);
     formData.append('latitude', latitude);
@@ -138,6 +140,25 @@ export default function AddHotel() {
           <input type="number" placeholder="e.g. 100" value={price} onChange={e => setPrice(e.target.value)} />
         </div>
 
+        <div className="form-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f8fafc', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.85rem 1rem' }}>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: '0.95rem', color: '#334155' }}>Show Price on App</div>
+            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>Turn off if price is variable / not fixed</div>
+          </div>
+          <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '26px', cursor: 'pointer', flexShrink: 0 }}>
+            <input type="checkbox" checked={showPrice} onChange={e => setShowPrice(e.target.checked)} style={{ opacity: 0, width: 0, height: 0 }} />
+            <span style={{
+              position: 'absolute', inset: 0, borderRadius: '999px', transition: '0.3s',
+              background: showPrice ? '#10b981' : '#cbd5e1',
+            }} />
+            <span style={{
+              position: 'absolute', top: '3px', left: showPrice ? '25px' : '3px',
+              width: '20px', height: '20px', borderRadius: '50%', background: '#fff',
+              transition: '0.3s', boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+            }} />
+          </label>
+        </div>
+
         <div className="form-group">
           <label>Address</label>
           <textarea rows={2} placeholder="Full address..." value={address} onChange={e => setAddress(e.target.value)}></textarea>
@@ -151,8 +172,9 @@ export default function AddHotel() {
         <div className="form-group">
           <label>Hotel Type</label>
           <select value={hotelType} onChange={e => setHotelType(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-            <option value="dynamic">Dynamic Menu</option>
-            <option value="fixed">Fixed Menu</option>
+            <option value="dynamic">Daily Specials</option>
+            <option value="fixed">Breakfast &amp; Snacks</option>
+            <option value="fastfood">Fast Food</option>
           </select>
         </div>
 
